@@ -166,3 +166,57 @@ export const deleteTeamSessionAPI = async (
   }
   return response
 }
+
+export const getDatasetsAPI = async (endpoint: string, authToken?: string) => {
+  const url = APIRoutes.GetDatasets(endpoint)
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: createHeaders(authToken)
+    })
+    const data = await response.json()
+    return data
+  } catch {
+    toast.error('Error fetching datasets')
+    return []
+  }
+}
+
+export const getCollectionsAPI = async (
+  endpoint: string,
+  datasetId: string,
+  authToken?: string
+) => {
+  const url = APIRoutes.GetCollections(endpoint, datasetId)
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: createHeaders(authToken)
+    })
+    const data = await response.json()
+    return data
+  } catch {
+    toast.error('Error fetching collections')
+    return []
+  }
+}
+
+export const addAgentAPI = async (
+  endpoint: string,
+  postData: any,
+  authToken?: string
+) => {
+  const url = APIRoutes.AddAgent(endpoint)
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: createHeaders(authToken),
+      body: JSON.stringify(postData)
+    })
+    const data = await response.json()
+    return data
+  } catch {
+    toast.error('Error adding agent')
+    return []
+  }
+}

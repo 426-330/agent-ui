@@ -11,11 +11,15 @@ import {
 import { useStore } from '@/store'
 import { useQueryState } from 'nuqs'
 import Icon from '@/components/ui/icon'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useChatActions from '@/hooks/useChatActions'
+import { Button } from '@/components/ui/button'
+import EntityDialog from './EntityDialog'
 
 export function EntitySelector() {
   const { mode, agents, teams, setMessages, setSelectedModel } = useStore()
+
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const { focusChatInput } = useChatActions()
   const [agentId, setAgentId] = useQueryState('agent', {
@@ -70,38 +74,59 @@ export function EntitySelector() {
     }
   }
 
+  let selectNode
+
   if (currentEntities.length === 0) {
-    return (
+    selectNode = (
       <Select disabled>
-        <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-primaryAccent text-xs font-medium uppercase opacity-50">
+        <SelectTrigger className="border-primary/15 h-9 w-full rounded-xl border bg-gray-100 text-xs font-medium opacity-50">
           <SelectValue placeholder={`No ${mode}s Available`} />
         </SelectTrigger>
+      </Select>
+    )
+  } else {
+    selectNode = (
+      <Select
+        value={currentValue || ''}
+        onValueChange={(value) => handleOnValueChange(value)}
+      >
+        <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 text-xs font-medium">
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent className="font-dmmono border-none bg-gray-100 shadow-lg">
+          {currentEntities.map((entity, index) => (
+            <SelectItem
+              className="cursor-pointer"
+              key={`${entity.id}-${index}`}
+              value={entity.id}
+            >
+              <div className="flex items-center gap-3 text-xs font-medium">
+                <Icon type={'user'} size="xs" />
+                {entity.name || entity.id}
+              </div>
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
     )
   }
 
   return (
-    <Select
-      value={currentValue || ''}
-      onValueChange={(value) => handleOnValueChange(value)}
-    >
-      <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-primaryAccent text-xs font-medium uppercase">
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent className="border-none bg-primaryAccent font-dmmono shadow-lg">
-        {currentEntities.map((entity, index) => (
-          <SelectItem
-            className="cursor-pointer"
-            key={`${entity.id}-${index}`}
-            value={entity.id}
+    <section className="flex w-full items-center justify-between">
+      {selectNode}
+      {mode === 'agent' && (
+        <>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="hover:cursor-pointer hover:bg-transparent"
+            onClick={() => setDialogOpen(true)}
           >
-            <div className="flex items-center gap-3 text-xs font-medium uppercase">
-              <Icon type={'user'} size="xs" />
-              {entity.name || entity.id}
-            </div>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+            <Icon type="plus-icon" size="xs" />
+          </Button>
+          <EntityDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+        </>
+      )}
+    </section>
   )
 }

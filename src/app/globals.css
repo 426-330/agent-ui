@@ -20,7 +20,7 @@
 ::-webkit-scrollbar-thumb {
   --tw-border-opacity: 1;
   @apply bg-border;
-  border-color: rgba(255, 255, 255, var(--tw-border-opacity));
+  border-color: rgba(0, 0, 0, var(--tw-border-opacity));
   border-radius: 9999px;
   border-width: 1px;
 }

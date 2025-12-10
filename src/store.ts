@@ -36,6 +36,7 @@ interface Store {
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>
   selectedEndpoint: string
   setSelectedEndpoint: (selectedEndpoint: string) => void
+  selectedDatasetEndpoint: string
   authToken: string
   setAuthToken: (authToken: string) => void
   agents: AgentDetails[]
@@ -83,7 +84,14 @@ export const useStore = create<Store>()(
       chatInputRef: { current: null },
       selectedEndpoint: 'http://localhost:7777',
       setSelectedEndpoint: (selectedEndpoint) =>
-        set(() => ({ selectedEndpoint })),
+        set(() => ({
+          selectedEndpoint,
+          selectedDatasetEndpoint: (selectedEndpoint || '').replace(
+            /\:[0-9]+/g,
+            ':7778'
+          )
+        })), // replace the port with 7778
+      selectedDatasetEndpoint: 'http://localhost:7778',
       authToken: '',
       setAuthToken: (authToken) => set(() => ({ authToken })),
       agents: [],

@@ -13,5 +13,10 @@ export const APIRoutes = {
   TeamRun: (agentOSUrl: string, teamId: string) =>
     `${agentOSUrl}/teams/${teamId}/runs`,
   DeleteTeamSession: (agentOSUrl: string, teamId: string, sessionId: string) =>
-    `${agentOSUrl}/v1//teams/${teamId}/sessions/${sessionId}`
+    `${agentOSUrl}/v1//teams/${teamId}/sessions/${sessionId}`,
+
+  GetDatasets: (agentOSUrl: string) => `${agentOSUrl}/api/dataset/list`,
+  GetCollections: (agentOSUrl: string, datasetId: string) =>
+    `${agentOSUrl}/api/collection/${datasetId}/list`,
+  AddAgent: (agentOSUrl: string) => `${agentOSUrl}/api/agents/huey`
 }

@@ -11,14 +11,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#FAFAFA',
+        primary: '#1677ff',
         primaryAccent: '#18181B',
         brand: '#FF4017',
         background: {
-          DEFAULT: '#111113',
-          secondary: '#27272A'
+          DEFAULT: '#fff',
+          secondary: '#333'
         },
-        secondary: '#f5f5f5',
+        secondary: '#333',
         border: 'rgba(var(--color-border-default))',
         accent: '#27272A',
         muted: '#A1A1AA',
