@@ -79,7 +79,7 @@ const EntityDialog = ({
       errorMessage = '名称是必填项'
     }
     if (!selectedDataset) {
-      errorMessage = '数据集是必填项'
+      errorMessage = '知识库是必填项'
     }
     // if (!selectedCollection) {
     //   errorMessage = '数据集合是必填项'
@@ -119,7 +119,7 @@ const EntityDialog = ({
     return (
       <Select value={selectedDataset} onValueChange={setSelectedDataset}>
         <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 font-medium">
-          <SelectValue placeholder="请选择数据集" />
+          <SelectValue placeholder="请选择知识库" />
         </SelectTrigger>
         <SelectContent className="font-dmmono border-none bg-gray-100 shadow-lg">
           {datasets?.map((dataset, index) => (
