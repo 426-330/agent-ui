@@ -76,13 +76,13 @@ const EntityDialog = ({
   const handleSave = async () => {
     let errorMessage = ''
     if (!name) {
-      errorMessage = 'Name is required'
+      errorMessage = '名称是必填项'
     }
     if (!selectedDataset) {
-      errorMessage = 'Dataset is required'
+      errorMessage = '数据集是必填项'
     }
     if (!selectedCollection) {
-      errorMessage = 'Collection is required'
+      errorMessage = '数据集合是必填项'
     }
 
     if (errorMessage) {
@@ -104,11 +104,11 @@ const EntityDialog = ({
         }
       })
       if (result?.task_id) {
-        toast.success('Agent added successfully')
+        toast.success('智能体添加成功')
         onOpenChange(false)
       }
     } catch (error) {
-      setDisplayErrorMessage('Error adding agent')
+      setDisplayErrorMessage('添加智能体失败')
     } finally {
       setIsLoading(false)
     }
@@ -117,17 +117,17 @@ const EntityDialog = ({
   const renderDatasetSelect = () => {
     return (
       <Select value={selectedDataset} onValueChange={setSelectedDataset}>
-        <SelectTrigger className="border-primary/15 bg-primaryAccent h-9 w-full rounded-xl border text-xs font-medium uppercase outline-none">
-          <SelectValue placeholder="Select a dataset" />
+        <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 font-medium">
+          <SelectValue placeholder="请选择数据集" />
         </SelectTrigger>
-        <SelectContent className="bg-primaryAccent font-dmmono border-none shadow-lg">
+        <SelectContent className="font-dmmono border-none bg-gray-100 shadow-lg">
           {datasets?.map((dataset, index) => (
             <SelectItem
               className="cursor-pointer"
               key={`${dataset.id}-${index}`}
               value={dataset.id}
             >
-              <div className="flex items-center gap-3 text-xs font-medium uppercase">
+              <div className="flex items-center gap-3 text-xs font-medium">
                 {dataset.name || dataset.id}
               </div>
             </SelectItem>
@@ -140,10 +140,10 @@ const EntityDialog = ({
   const renderCollectionSelect = () => {
     return (
       <Select value={selectedCollection} onValueChange={setSelectedCollection}>
-        <SelectTrigger className="border-primary/15 bg-primaryAccent h-9 w-full rounded-xl border text-xs font-medium uppercase">
-          <SelectValue placeholder="Select a collection" />
+        <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 font-medium">
+          <SelectValue placeholder="请选择数据集合" />
         </SelectTrigger>
-        <SelectContent className="bg-primaryAccent font-dmmono border-none shadow-lg">
+        <SelectContent className="font-dmmono border-none bg-gray-100 shadow-lg">
           {collections?.map((collection, index) => (
             <SelectItem
               className="cursor-pointer"
@@ -164,23 +164,23 @@ const EntityDialog = ({
     return (
       <section className="my-4">
         <div className="mb-4">
-          <p className="mb-2 text-xs font-medium uppercase">Dataset</p>
+          <p className="mb-2 text-xs font-medium uppercase">数据集</p>
           {renderDatasetSelect()}
         </div>
         {selectedDataset && (
           <div className="mb-4">
-            <p className="mb-2 text-xs font-medium uppercase">Collection</p>
+            <p className="mb-2 text-xs font-medium uppercase">数据集合</p>
             {renderCollectionSelect()}
           </div>
         )}
         <div>
-          <p className="mb-2 text-xs font-medium uppercase">Name</p>
+          <p className="mb-2 text-xs font-medium uppercase">名称</p>
           <input
             type="text"
             value={name}
-            placeholder="Enter a name"
+            placeholder="请输入名称"
             onChange={(e) => setName(e.target.value)}
-            className="border-primary/15 bg-accent text-muted flex h-9 w-full items-center text-ellipsis rounded-xl border p-3 text-xs font-medium"
+            className="flex h-9 w-full items-center text-ellipsis rounded-xl border bg-gray-100 p-3 text-xs font-medium"
           />
         </div>
       </section>
@@ -192,7 +192,7 @@ const EntityDialog = ({
       <DialogContent>
         <DialogHeader className="mb-4">
           <DialogTitle>
-            Add Agent{' '}
+            添加智能体{' '}
             {displayErrorMessage && (
               <span className="text-destructive pl-2 text-xs font-medium">
                 {displayErrorMessage}
@@ -207,15 +207,15 @@ const EntityDialog = ({
             className="border-border font-geist rounded-xl"
             onClick={handleClose}
           >
-            CANCEL
+            取消
           </Button>
           <Button
-            variant="destructive"
+            variant="outline"
             className="font-geist rounded-xl"
             onClick={handleSave}
             disabled={isLoading}
           >
-            {isLoading ? 'Saving...' : 'SAVE'}
+            {isLoading ? '保存中...' : '保存'}
           </Button>
         </DialogFooter>
       </DialogContent>
