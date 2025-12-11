@@ -90,7 +90,7 @@ export function EntitySelector() {
         value={currentValue || ''}
         onValueChange={(value) => handleOnValueChange(value)}
       >
-        <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 text-xs font-medium">
+        <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 font-medium">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent className="font-dmmono border-none bg-gray-100 shadow-lg">
@@ -100,7 +100,7 @@ export function EntitySelector() {
               key={`${entity.id}-${index}`}
               value={entity.id}
             >
-              <div className="flex items-center gap-3 text-xs font-medium">
+              <div className="flex items-center gap-3 font-medium">
                 <Icon type={'user'} size="xs" />
                 {entity.name || entity.id}
               </div>
