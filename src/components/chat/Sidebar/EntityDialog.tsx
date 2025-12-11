@@ -16,6 +16,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import useDatasetActions from '@/hooks/useDatasetActions'
+import useChatActions from '@/hooks/useChatActions'
 
 const EntityDialog = ({
   open,
@@ -24,12 +25,12 @@ const EntityDialog = ({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) => {
+  const { getAgents } = useChatActions()
   const { getDatasets, getCollections, addAgent } = useDatasetActions()
   const [datasets, setDatasets] = useState<any[]>([])
   const [selectedDataset, setSelectedDataset] = useState<any>()
 
   const [collections, setCollections] = useState<any[]>([])
-  const [selectedCollection, setSelectedCollection] = useState<any>()
 
   const [name, setName] = useState<string>('')
   const [displayErrorMessage, setDisplayErrorMessage] = useState<string>('')
@@ -43,19 +44,18 @@ const EntityDialog = ({
       setName('')
       setDisplayErrorMessage('')
       setSelectedDataset(undefined)
-      setSelectedCollection(undefined)
     }
   }, [open])
 
   useEffect(() => {
-    if (!!(name || selectedDataset || selectedCollection)) {
+    if (!!(name || selectedDataset)) {
       setDisplayErrorMessage('')
     }
-  }, [name, selectedDataset, selectedCollection])
+  }, [name, selectedDataset])
 
   useEffect(() => {
     if (selectedDataset) {
-      fetchCollections(selectedDataset)
+      // fetchCollections(selectedDataset)
     }
   }, [selectedDataset])
 
@@ -81,9 +81,9 @@ const EntityDialog = ({
     if (!selectedDataset) {
       errorMessage = '数据集是必填项'
     }
-    if (!selectedCollection) {
-      errorMessage = '数据集合是必填项'
-    }
+    // if (!selectedCollection) {
+    //   errorMessage = '数据集合是必填项'
+    // }
 
     if (errorMessage) {
       setDisplayErrorMessage(errorMessage)
@@ -98,7 +98,7 @@ const EntityDialog = ({
           name,
           role: 'agent',
           dataset_id: selectedDataset,
-          collection_id: selectedCollection,
+          // collection_id: selectedCollection,
           agent_db_file: 'data/agents.db',
           session_table: 'deep_knowledge_sessions'
         }
@@ -106,6 +106,7 @@ const EntityDialog = ({
       if (result?.task_id) {
         toast.success('智能体添加成功')
         onOpenChange(false)
+        getAgents()
       }
     } catch (error) {
       setDisplayErrorMessage('添加智能体失败')
@@ -137,42 +138,13 @@ const EntityDialog = ({
     )
   }
 
-  const renderCollectionSelect = () => {
-    return (
-      <Select value={selectedCollection} onValueChange={setSelectedCollection}>
-        <SelectTrigger className="h-9 w-full rounded-xl border bg-gray-100 font-medium">
-          <SelectValue placeholder="请选择数据集合" />
-        </SelectTrigger>
-        <SelectContent className="font-dmmono border-none bg-gray-100 shadow-lg">
-          {collections?.map((collection, index) => (
-            <SelectItem
-              className="cursor-pointer"
-              key={`${collection.id}-${index}`}
-              value={collection.id}
-            >
-              <div className="flex items-center gap-3 text-xs font-medium uppercase">
-                {collection.name || collection.id}
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    )
-  }
-
   const renderForm = () => {
     return (
       <section className="my-4">
         <div className="mb-4">
-          <p className="mb-2 text-xs font-medium uppercase">数据集</p>
+          <p className="mb-2 text-xs font-medium uppercase">知识库</p>
           {renderDatasetSelect()}
         </div>
-        {selectedDataset && (
-          <div className="mb-4">
-            <p className="mb-2 text-xs font-medium uppercase">数据集合</p>
-            {renderCollectionSelect()}
-          </div>
-        )}
         <div>
           <p className="mb-2 text-xs font-medium uppercase">名称</p>
           <input
